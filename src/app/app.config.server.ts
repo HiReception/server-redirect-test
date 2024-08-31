@@ -12,8 +12,16 @@ const serverConfig: ApplicationConfig = {
       provide: APP_BOOTSTRAP_LISTENER, multi: true, deps: [Router, /*RESPONSE*/], useFactory: (router: Router, /*response: Response*/) => {
         return () => {
           router.events.subscribe(event => {
+            console.log(event);
             //only when redirectTo was used, we redirect via response.redirect(url)
+            if (event instanceof NavigationEnd) {
+
+              console.log("event.url = " + event.url);
+              console.log("event.urlAfterRedirects = " + event.urlAfterRedirects);
+
+            }
             if (event instanceof NavigationEnd && event.url !== event.urlAfterRedirects) {
+              console.log("redirect detected");
               // response.redirect(301, event.urlAfterRedirects);
               // response.end();
             }
